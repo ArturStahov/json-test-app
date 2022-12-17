@@ -1,5 +1,5 @@
 <template>
-    <div class="home-wrapper">
+    <div class="board-wrapper">
 
     </div>
 </template>
@@ -9,7 +9,7 @@ import { defineComponent } from 'vue';
 import { useUserStore } from '../../stor/userStor';
 
 export default defineComponent({
-    name: 'HomePage',
+    name: 'BoardPage',
     components: {
     },
 
@@ -27,8 +27,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.home-wrapper {
-    background-image: url('https://cdn.pixabay.com/photo/2016/03/18/15/02/ufo-1265186_960_720.jpg');
+.board-wrapper {
+    background-color: rgb(212, 233, 117);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

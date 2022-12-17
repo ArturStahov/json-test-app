@@ -1,10 +1,10 @@
-# Vue 3 + TypeScript + Vite + pinia
+# Json-test app
 
 
 ### use:
--- node v18
--- mitt (for global event emit) 
--- TypeScript
--- Vite
--- pinia store
--- axios
+- node v18
+- mitt (for global event emit) 
+- TypeScript
+- Vite
+- pinia store
+- axios
