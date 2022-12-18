@@ -1,16 +1,20 @@
 import { createApp } from 'vue';
-import './style.css';
+
+import 'vuetify/styles';
+import 'normalize.css';
+import './style/main.scss';
+import '@fortawesome/fontawesome-free/css/all.css'
 
 import App from './App.vue';
 import { createPinia } from 'pinia';
 import router from './router';
 import { initAppInstance } from './services/common.service';
 
-import 'vuetify/styles'
+
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import { aliases, fa } from 'vuetify/iconsets/fa'
 
 const vuetify = createVuetify({
   components,
@@ -19,7 +23,7 @@ const vuetify = createVuetify({
     defaultSet: 'mdi',
     aliases,
     sets: {
-      mdi,
+      fa,
     }
   },
 });
