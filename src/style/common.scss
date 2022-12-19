@@ -14,9 +14,6 @@ html {
 }
 
 :root {
-  line-height: 1.2;
-  font-weight: 400;
-  color: rgba(32, 31, 31, 0.87);
   background-color: #f0eaea;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -31,7 +28,8 @@ a {
 }
 
 body {
-  font-family: Helvetica, Arial, sans-serif;
+  @include font-settings(1.4rem, 1.2);
+  font-family: $base-font;
   margin: 0;
   min-width: 320px;
 }

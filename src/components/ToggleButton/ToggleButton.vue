@@ -12,27 +12,19 @@ export default defineComponent({
   props: {
     config: {
       type: Object,
-      default: () => ({
-        defaultValue: 'login',
-        actions: [
-          {
-            icon: 'fas fa-sign-in',
-            value: 'login',
-          },
-          {
-            icon: 'fas fa-user-plus',
-            value: 'signIn',
-          },
-        ],
-      }),
+      required: true,
+    },
+    defaultValue: {
+      type: String,
+      required: true,
     },
   },
   data: () => ({
-    toggle: 'login',
+    toggle: '',
   }),
 
   created() {
-    this.toggle = this.config.defaultValue;
+    this.toggle = this.defaultValue;
   },
   computed: {
     actions() {
