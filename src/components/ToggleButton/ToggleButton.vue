@@ -1,5 +1,5 @@
 <template lang="pug">
-v-btn-toggle(v-model='toggle', rounded='0', color='deep-purple-accent-3', group, mandatory)
+v-btn-toggle(v-model='toggle', rounded='0', color='#ffef7c', group, mandatory)
   v-btn(v-for='(action, idx) in actions', :key='idx', :value='action.value')
     v-icon(:icon='action.icon')
 </template>

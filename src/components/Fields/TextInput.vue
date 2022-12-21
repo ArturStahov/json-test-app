@@ -1,15 +1,22 @@
 <template lang="pug">
 .text-input
   v-text-field(
-    variant='outlined',
-    :type='visibleEyeIcon ? getType : fieldConfig.type',
+    single-line,
+    hide-details,
+    density='compact',
+    variant='solo',
+    bg-color='#e1fdd7',
+    :type='typeField',
     :label='fieldConfig.label',
     :placeholder='fieldConfig.placeholder',
+    :maxLength='maxLength',
     v-model='inputValue'
   )
-    template(#append-inner, v-if='visibleEyeIcon')
-      v-icon(:icon='getEyeIcon', @click='handlerClickAppend')
+    template(#append-inner, v-if='isPasswordField')
+      v-icon(:icon='getEyeIcon', @click='handlerClickAppend', size='18px')
+  span.counter(v-if='visibleCounter') {{ counterValue }}
 </template>
+
 
 <script lang="ts">
 import { defineComponent } from 'vue';
@@ -20,21 +27,47 @@ export default defineComponent({
     fieldConfig: {
       type: Object,
       required: true,
+      default: () => ({
+        code: 'name',
+        type: 'text',
+        placeholder: 'text',
+        label: 'text',
+        required: true,
+        value: '',
+      }),
+    },
+    isPasswordField: {
+      type: Boolean,
+      default: false,
+    },
+    visibleCounter: {
+      type: Boolean,
+      default: false,
+    },
+    maxLength: {
+      type: Number,
+      default: 50,
     },
   },
   data: () => ({
     inputValue: '',
     show: false,
   }),
+  created() {
+    this.inputValue = this.fieldConfig.value;
+  },
   computed: {
     getEyeIcon() {
       return this.show ? 'fas fa-eye' : 'fa-solid fa-eye-slash';
     },
-    visibleEyeIcon() {
-      return this.fieldConfig.code === 'password' || this.fieldConfig.code === 'repassword';
+    typeField() {
+      return this.isPasswordField ? this.getType : this.fieldConfig.type;
     },
     getType() {
       return this.show ? 'text' : 'password';
+    },
+    counterValue() {
+      return `${this.inputValue.length} / 50`;
     },
   },
   methods: {
@@ -46,7 +79,7 @@ export default defineComponent({
   watch: {
     inputValue: {
       handler(value) {
-        this.$emit('change', value);
+        this.$emit('change-field', value);
       },
     },
   },
@@ -55,6 +88,16 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import '../../style/theme.scss';
+
 .text-input {
+  position: relative;
+  .counter {
+    position: absolute;
+    bottom: -17px;
+    right: 0;
+  }
+  :deep(.v-input .v-input__slot) {
+    border-radius: 100px;
+  }
 }
 </style>

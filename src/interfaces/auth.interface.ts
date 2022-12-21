@@ -38,9 +38,10 @@ export interface IField {
   label: string,
   placeholder: string,
   required: boolean,
+  value: string,
 }
 
-type typeCodeFields = codeFields.EMAIL
+export type typeCodeFields = codeFields.EMAIL
   | codeFields.NAME
   | codeFields.PASSWORD
   | codeFields.REPASSWORD

@@ -3,26 +3,40 @@
   v-card.mx-auto
     template(v-slot:title) {{ formTitle }}
     v-card-text 
-      v-form
-        TextInput(v-for='(field, idx) in fields', :key='idx', :fieldConfig='field')
+      v-form(@submit.prevent='handlerSubmit')
+        TextInput(
+          v-for='(field, idx) in fields',
+          :key='idx',
+          :isPasswordField='isPasswordField(field)',
+          :fieldConfig='field',
+          :visibleCounter='visibleCounter(field)',
+          @change-field='(value) => handlerChange({ value, code: field.code })'
+        )
+        v-btn.rounded-pill.btn-submit(color='#33a50e', type='submit') OK
 </template>
 
 <script lang="ts">
 import { authActions } from '@/constants/auth';
+import { codeFields } from '@/constants/fields';
 import { defineComponent } from 'vue';
-import { IAuthPayload, typesAction } from '../../interfaces/auth.interface';
+import { IAuthPayload, IField, typeCodeFields, typesAction } from '../../interfaces/auth.interface';
 import TextInput from '../Fields/TextInput.vue';
 
 export default defineComponent({
   name: 'AuthForm',
+
   components: { TextInput },
+
   props: {
     config: {
       type: Object,
       required: true,
     },
   },
-  data: () => ({}),
+
+  data: () => ({
+    submitPayload: {},
+  }),
 
   computed: {
     formTitle() {
@@ -30,6 +44,29 @@ export default defineComponent({
     },
     fields() {
       return this.config.fields;
+    },
+  },
+
+  methods: {
+    isPasswordField(field: IField) {
+      return field.code === codeFields.PASSWORD || field.code === codeFields.REPASSWORD;
+    },
+
+    visibleCounter(field: IField) {
+      return field.code === codeFields.EMAIL ? false : true;
+    },
+
+    handlerChange(payload: { value: string; code: typeCodeFields }) {
+      this.submitPayload = {
+        ...this.submitPayload,
+        [`${payload.code}`]: payload.value,
+      };
+      console.log(this.submitPayload);
+    },
+
+    handlerSubmit() {
+      this.config.submitEvent({ empty: true });
+      console.log('submit');
     },
   },
 });
@@ -45,6 +82,7 @@ export default defineComponent({
   }
 
   :deep(.v-card) {
+    overflow: visible;
     border-top-left-radius: 72px;
     border-top-right-radius: 72px;
     .v-card-item {
@@ -56,6 +94,14 @@ export default defineComponent({
     .v-card-text {
       padding: 20px;
     }
+  }
+  .btn-submit {
+    width: 100px;
+    height: 40px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    @include font-settings(1.6rem, 1.2, 400, $color-white, $decor-font);
   }
 }
 </style>

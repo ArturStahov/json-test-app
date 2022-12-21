@@ -33,6 +33,7 @@ function loginConfig(action: typesAction) {
         placeholder: 'email@gmail.com',
         label: 'email',
         required: true,
+        value: '',
       },
       {
         code: codeFields.PASSWORD,
@@ -40,6 +41,7 @@ function loginConfig(action: typesAction) {
         placeholder: 'you uniq code',
         label: 'input you password',
         required: true,
+        value: '',
       }
     ],
     async submitEvent(payload: IValueAuthPayload) {
@@ -58,6 +60,7 @@ function registrationConfig(action: typesAction) {
         label: 'nickname',
         placeholder: 'input you nickname',
         required: false,
+        value: '',
       },
       {
         code: codeFields.EMAIL,
@@ -65,6 +68,7 @@ function registrationConfig(action: typesAction) {
         placeholder: 'email@gmail.com',
         label: 'email',
         required: true,
+        value: '',
       },
       {
         code: codeFields.PASSWORD,
@@ -72,6 +76,7 @@ function registrationConfig(action: typesAction) {
         label: 'input you password',
         placeholder: 'you uniq code',
         required: true,
+        value: '',
       },
       {
         code: codeFields.REPASSWORD,
@@ -79,6 +84,7 @@ function registrationConfig(action: typesAction) {
         placeholder: 'repeat password',
         label: 'repeat you password',
         required: true,
+        value: '',
       }
 
 
@@ -91,6 +97,7 @@ function registrationConfig(action: typesAction) {
 
 async function loginFlow(payload: IValueAuthPayload) {
   try {
+    console.log('>>>>payload LOGIN', payload);
     const userStor = useUserStore();
     const data = await userStor.login(payload);
     const token = (data as IUser).token;
@@ -102,6 +109,7 @@ async function loginFlow(payload: IValueAuthPayload) {
 
 async function registrationFlow(payload: IValueAuthPayload) {
   try {
+    console.log('>>>>payload REG', payload);
     const userStor = useUserStore();
     const data = await userStor.registration(payload);
     console.log('DATA', data)

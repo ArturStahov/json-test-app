@@ -2,9 +2,10 @@
 .auth-wrapper
   v-container.d-flex.justify-center.flex-wrap.flex-lg-nowrap.flex-md-nowrap.align-center
     v-row.mx-0.my-0.justify-center
-      v-col
+      v-col.logo-wrapper
         p.logo {{ "JSON-cactus" }}
           span {{ `test:you:feature:)` }}
+        .logo-cactus
     v-row.mx-0.my-0.justify-center
       v-col.d-flex.flex-column.align-center
         ToggleButton.toggle-group(
@@ -12,7 +13,7 @@
           :defaultValue='startAuthAction',
           :config='toggleConfig'
         )
-        AuthForm(:config='authConfig', v-if='authConfig')
+        AuthForm(:config='authConfig', v-if='authConfig', :key='refreshKey')
 </template>
 
 <script lang="ts">
@@ -47,6 +48,7 @@ export default defineComponent({
       ],
     };
     const authConfig = ref<IAuthConfig | null>(null);
+    const refreshKey = ref<number>(0);
 
     onMounted(() => {
       authConfig.value = getAuthConfig(startAuthAction);
@@ -54,10 +56,11 @@ export default defineComponent({
 
     const handlerToggleForm = (authAction: typesAction) => {
       authConfig.value = getAuthConfig(authAction);
+      refreshKey.value += 1;
       console.log(authConfig.value);
     };
 
-    return { userStor, handlerToggleForm, startAuthAction, authConfig, toggleConfig };
+    return { userStor, handlerToggleForm, startAuthAction, authConfig, toggleConfig, refreshKey };
   },
   computed: {
     user() {
@@ -84,10 +87,16 @@ export default defineComponent({
     height: 100%;
   }
 
+  .logo-wrapper {
+    position: relative;
+  }
+
   .logo {
     @include font-settings(4rem, 1.2, 400, $color-blue, $decor-font);
+    position: relative;
+    z-index: 9;
     padding: 10px;
-    background: $color-white;
+    background: $color-light-yellow;
     border-radius: 20px;
     border: 5px dotted $color-green;
     display: flex;
@@ -95,6 +104,18 @@ export default defineComponent({
     span {
       @include font-settings(2rem, 1.2, 400, $color-green, $decor-font);
     }
+  }
+
+  .logo-cactus {
+    width: 200px;
+    height: 180px;
+    position: absolute;
+    right: 0;
+    top: -160px;
+    background-image: url('./images/cactus.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
 
   .toggle-group {
