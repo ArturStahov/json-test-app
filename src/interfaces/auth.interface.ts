@@ -39,8 +39,8 @@ export interface IField {
   placeholder: string,
   required: boolean,
   value: string,
-  errorMessage: string,
-  validStatus: boolean,
+  errorMessage?: string,
+  validStatus?: boolean,
 }
 
 export type rulesType = (v: string) => boolean;
