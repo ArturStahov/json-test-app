@@ -33,6 +33,8 @@ function loginConfig(action: typesAction) {
         placeholder: 'email@gmail.com',
         label: 'email',
         required: true,
+        errorMessage: 'E-mail must be valid',
+        validStatus: true,
         value: '',
       },
       {
@@ -40,7 +42,9 @@ function loginConfig(action: typesAction) {
         type: 'password',
         placeholder: 'you uniq code',
         label: 'input you password',
+        errorMessage: 'Password must be more than 8 characters',
         required: true,
+        validStatus: true,
         value: '',
       }
     ],
@@ -68,6 +72,8 @@ function registrationConfig(action: typesAction) {
         placeholder: 'email@gmail.com',
         label: 'email',
         required: true,
+        errorMessage: 'E-mail must be valid',
+        validStatus: true,
         value: '',
       },
       {
@@ -76,6 +82,8 @@ function registrationConfig(action: typesAction) {
         label: 'input you password',
         placeholder: 'you uniq code',
         required: true,
+        errorMessage: 'Password must be more than 8 characters',
+        validStatus: true,
         value: '',
       },
       {
@@ -84,6 +92,8 @@ function registrationConfig(action: typesAction) {
         placeholder: 'repeat password',
         label: 'repeat you password',
         required: true,
+        errorMessage: 'Different with password value!',
+        validStatus: true,
         value: '',
       }
 

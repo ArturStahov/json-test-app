@@ -13,6 +13,18 @@ export default defineComponent({
     config: {
       type: Object,
       required: true,
+      default: () => ({
+        actions: [
+          {
+            icon: 'fas fa-sign-in',
+            value: 'login',
+          },
+          {
+            icon: 'fas fa-user-plus',
+            value: 'registration',
+          },
+        ],
+      }),
     },
     defaultValue: {
       type: String,
@@ -42,4 +54,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import '../../style/theme.scss';
+:deep(.v-btn) {
+  background: $color-brown;
+}
 </style>

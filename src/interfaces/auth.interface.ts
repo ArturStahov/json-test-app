@@ -39,7 +39,11 @@ export interface IField {
   placeholder: string,
   required: boolean,
   value: string,
+  errorMessage: string,
+  validStatus: boolean,
 }
+
+export type rulesType = (v: string) => boolean;
 
 export type typeCodeFields = codeFields.EMAIL
   | codeFields.NAME

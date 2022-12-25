@@ -1,6 +1,7 @@
 <template lang="pug">
 .text-input
   v-text-field(
+    v-bind='$attrs',
     single-line,
     hide-details,
     density='compact',
@@ -14,6 +15,7 @@
   )
     template(#append-inner, v-if='isPasswordField')
       v-icon(:icon='getEyeIcon', @click='handlerClickAppend', size='18px')
+  span.error-message(v-if='!validStatus') {{ errorMessage }}
   span.counter(v-if='visibleCounter') {{ counterValue }}
 </template>
 
@@ -32,6 +34,7 @@ export default defineComponent({
         type: 'text',
         placeholder: 'text',
         label: 'text',
+        errorMessage: 'text',
         required: true,
         value: '',
       }),
@@ -52,6 +55,7 @@ export default defineComponent({
   data: () => ({
     inputValue: '',
     show: false,
+    validStatus: true,
   }),
   created() {
     this.inputValue = this.fieldConfig.value;
@@ -67,7 +71,10 @@ export default defineComponent({
       return this.show ? 'text' : 'password';
     },
     counterValue() {
-      return `${this.inputValue.length} / 50`;
+      return `${this.inputValue ? this.inputValue.length : 0} / 50`;
+    },
+    errorMessage() {
+      return this.fieldConfig.errorMessage;
     },
   },
   methods: {
@@ -82,6 +89,12 @@ export default defineComponent({
         this.$emit('change-field', value);
       },
     },
+    'fieldConfig.validStatus': {
+      handler(value) {
+        this.validStatus = value;
+      },
+      deep: true,
+    },
   },
 });
 </script>
@@ -95,6 +108,12 @@ export default defineComponent({
     position: absolute;
     bottom: -17px;
     right: 0;
+  }
+  .error-message {
+    position: absolute;
+    bottom: -17px;
+    left: 15px;
+    color: $color-red;
   }
   :deep(.v-input .v-input__slot) {
     border-radius: 100px;

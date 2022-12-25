@@ -76,7 +76,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('./images/bg.png');
+  background-image: url('./images/bg.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

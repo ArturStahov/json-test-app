@@ -3,7 +3,7 @@
   v-card.mx-auto
     template(v-slot:title) {{ formTitle }}
     v-card-text 
-      v-form(@submit.prevent='handlerSubmit')
+      v-form(@submit.prevent='handlerSubmit', ref='form')
         TextInput(
           v-for='(field, idx) in fields',
           :key='idx',
@@ -19,7 +19,7 @@
 import { authActions } from '@/constants/auth';
 import { codeFields } from '@/constants/fields';
 import { defineComponent } from 'vue';
-import { IAuthPayload, IField, typeCodeFields, typesAction } from '../../interfaces/auth.interface';
+import { IField, typeCodeFields, rulesType } from '../../interfaces/auth.interface';
 import TextInput from '../Fields/TextInput.vue';
 
 export default defineComponent({
@@ -35,15 +35,22 @@ export default defineComponent({
   },
 
   data: () => ({
-    submitPayload: {},
+    submitPayload: {} as { [key: string]: string },
+    passwordRules: [(v: string) => !!v, (v: string) => v && v.length > 8],
+    emailRules: [(v: string) => !!v, (v: string) => /.+@.+\..+/.test(v)],
+    inputFields: [] as IField[] | [],
   }),
+
+  created() {
+    this.inputFields = [...this.config.fields];
+  },
 
   computed: {
     formTitle() {
       return this.config.action === authActions.LOGIN ? ':login:' : ':registration:new:user';
     },
     fields() {
-      return this.config.fields;
+      return this.inputFields;
     },
   },
 
@@ -56,17 +63,51 @@ export default defineComponent({
       return field.code === codeFields.EMAIL ? false : true;
     },
 
+    getRules(field: IField) {
+      const rules = {
+        [`${codeFields.EMAIL}`]: this.emailRules,
+        [`${codeFields.PASSWORD}`]: this.passwordRules,
+      };
+      return rules[field.code] as rulesType[];
+    },
+
     handlerChange(payload: { value: string; code: typeCodeFields }) {
       this.submitPayload = {
         ...this.submitPayload,
         [`${payload.code}`]: payload.value,
       };
-      console.log(this.submitPayload);
+      console.log(this.submitPayload, 'this.submitPayload');
+    },
+
+    reset() {
+      (this.$refs.form as any).reset();
+    },
+
+    validateForm() {
+      let statuses: [] | boolean[] = [];
+      this.inputFields.forEach((fieldConfig: IField) => {
+        const fieldValue = this.submitPayload[fieldConfig.code];
+        if (fieldConfig.required) {
+          const validationRules = this.getRules(fieldConfig);
+          const resultChecked = validationRules
+            .map((rule: rulesType) => rule(fieldValue))
+            .filter((status: boolean) => status === false);
+          fieldConfig.validStatus = !resultChecked.length;
+          statuses = [...statuses, ...resultChecked];
+        }
+      });
+      return !!statuses.length;
     },
 
     handlerSubmit() {
-      this.config.submitEvent({ empty: true });
-      console.log('submit');
+      const isHaveError = this.validateForm();
+      console.log(isHaveError);
+
+      if (!isHaveError) {
+        this.config.submitEvent(this.submitPayload);
+        this.reset();
+        console.log('submit');
+      }
     },
   },
 });
@@ -85,6 +126,8 @@ export default defineComponent({
     overflow: visible;
     border-top-left-radius: 72px;
     border-top-right-radius: 72px;
+    background: #ffef7c;
+    border: 5px dotted $color-green;
     .v-card-item {
       padding: 20px;
     }
