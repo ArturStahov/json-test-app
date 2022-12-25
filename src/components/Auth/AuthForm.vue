@@ -119,7 +119,7 @@ export default defineComponent({
   width: 400px;
 
   .text-input {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
 
   :deep(.v-card) {
@@ -135,7 +135,7 @@ export default defineComponent({
       @include font-settings(2rem, 1.2, 400, $color-green, $decor-font);
     }
     .v-card-text {
-      padding: 20px;
+      padding: 20px 20px 40px 20px;
     }
   }
   .btn-submit {
@@ -143,6 +143,7 @@ export default defineComponent({
     height: 40px;
     position: absolute;
     left: 50%;
+    bottom: -23px;
     transform: translateX(-50%);
     @include font-settings(1.6rem, 1.2, 400, $color-white, $decor-font);
   }
