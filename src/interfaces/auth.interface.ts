@@ -43,7 +43,11 @@ export interface IField {
   validStatus?: boolean,
 }
 
-export type rulesType = (v: string) => boolean;
+export interface IFormSubmitPayload { [key: string]: string }
+
+export type typeValidationItem = { code: typeCodeFields, status: boolean }
+
+export type rulesType = (v: string, valuePassword?: string) => boolean;
 
 export type typeCodeFields = codeFields.EMAIL
   | codeFields.NAME

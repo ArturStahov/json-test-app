@@ -19,8 +19,9 @@
 import { authActions } from '@/constants/auth';
 import { codeFields } from '@/constants/fields';
 import { defineComponent } from 'vue';
-import { IField, typeCodeFields, rulesType } from '../../interfaces/auth.interface';
+import { IField, typeCodeFields, typeValidationItem, IFormSubmitPayload } from '../../interfaces/auth.interface';
 import TextInput from '../Fields/TextInput.vue';
+import { validateForm } from '../../services/auth.service';
 
 export default defineComponent({
   name: 'AuthForm',
@@ -35,9 +36,7 @@ export default defineComponent({
   },
 
   data: () => ({
-    submitPayload: {} as { [key: string]: string },
-    passwordRules: [(v: string) => !!v, (v: string) => v && v.length > 8],
-    emailRules: [(v: string) => !!v, (v: string) => /.+@.+\..+/.test(v)],
+    submitPayload: {} as IFormSubmitPayload,
     inputFields: [] as IField[] | [],
   }),
 
@@ -63,14 +62,6 @@ export default defineComponent({
       return field.code === codeFields.EMAIL ? false : true;
     },
 
-    getRules(field: IField) {
-      const rules = {
-        [`${codeFields.EMAIL}`]: this.emailRules,
-        [`${codeFields.PASSWORD}`]: this.passwordRules,
-      };
-      return rules[field.code] as rulesType[];
-    },
-
     handlerChange(payload: { value: string; code: typeCodeFields }) {
       this.submitPayload = {
         ...this.submitPayload,
@@ -83,24 +74,20 @@ export default defineComponent({
       (this.$refs.form as any).reset();
     },
 
-    validateForm() {
-      let statuses: [] | boolean[] = [];
-      this.inputFields.forEach((fieldConfig: IField) => {
-        const fieldValue = this.submitPayload[fieldConfig.code];
-        if (fieldConfig.required) {
-          const validationRules = this.getRules(fieldConfig);
-          const resultChecked = validationRules
-            .map((rule: rulesType) => rule(fieldValue))
-            .filter((status: boolean) => status === false);
-          fieldConfig.validStatus = !resultChecked.length;
-          statuses = [...statuses, ...resultChecked];
-        }
+    setValidation(validationStatuses: [] | typeValidationItem[]) {
+      this.inputFields = this.inputFields.map((fieldConfig: IField) => {
+        const validation = validationStatuses.find(
+          (validationItem: typeValidationItem) => validationItem.code === fieldConfig.code
+        );
+        return validation ? { ...fieldConfig, validStatus: validation.status } : fieldConfig;
       });
-      return !!statuses.length;
     },
 
     handlerSubmit() {
-      const isHaveError = this.validateForm();
+      const validationStatuses = validateForm(this.inputFields, this.submitPayload);
+      const isHaveError = validationStatuses.some((validationItem: typeValidationItem) => !validationItem.status);
+      this.setValidation(validationStatuses);
+
       console.log(isHaveError);
 
       if (!isHaveError) {
