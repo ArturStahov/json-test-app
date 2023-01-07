@@ -71,7 +71,7 @@ export default defineComponent({
       return this.show ? 'text' : 'password';
     },
     counterValue() {
-      return `${this.inputValue ? this.inputValue.length : 0} / 50`;
+      return `${this.inputValue ? this.inputValue.length : 0} / ${this.maxLength}`;
     },
     errorMessage() {
       return this.fieldConfig.errorMessage;
