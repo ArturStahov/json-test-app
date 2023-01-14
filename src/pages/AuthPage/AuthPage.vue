@@ -1,6 +1,6 @@
 <template lang="pug">
 .auth-wrapper
-  v-container.d-flex.justify-center.flex-wrap.flex-lg-nowrap.flex-md-nowrap.align-center
+  v-container.auth-container.d-flex.justify-center.flex-wrap.flex-lg-nowrap.flex-md-nowrap.align-center
     v-row.mx-0.my-0.justify-center
       v-col.logo-wrapper
         p.logo {{ "JSON-cactus" }}
@@ -83,8 +83,9 @@ export default defineComponent({
   width: 100%;
   height: 100%;
 
-  .v-container {
+  .auth-container {
     height: 100%;
+    max-width: 1100px;
   }
 
   .logo-wrapper {

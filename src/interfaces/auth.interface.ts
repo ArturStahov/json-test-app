@@ -1,9 +1,6 @@
 import { authActions } from "@/constants/auth";
 import { codeFields } from "@/constants/fields";
 
-
-export type typesAction = authActions.LOGIN | authActions.REGISTRATION
-
 export interface IAuthPayload {
   action: typesAction,
   value: IValueAuthPayload,
@@ -44,6 +41,8 @@ export interface IField {
 }
 
 export interface IFormSubmitPayload { [key: string]: string }
+
+export type typesAction = authActions.LOGIN | authActions.REGISTRATION
 
 export type typeValidationItem = { code: typeCodeFields, status: boolean }
 
