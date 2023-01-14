@@ -31,9 +31,10 @@ async function loginFlow(payload: IValueAuthPayload) {
 
 async function registrationFlow(payload: IValueAuthPayload) {
   try {
-    console.log('>>>>payload REG', payload);
+    const submitPayload = excludeParam(codeFields.REPASSWORD, payload)
+    console.log('>>>>payload REG', submitPayload);
     const userStor = useUserStore();
-    const data = await userStor.registration(payload);
+    const data = await userStor.registration(submitPayload);
     console.log('DATA', data)
   } catch (error) {
     console.log('>>>>ERRR', error);
@@ -90,6 +91,11 @@ export function getAuthConfig(action: typesAction): IAuthConfig {
   }
 
   return flow[action](action);
+}
+
+function excludeParam(keyExclude: string, obj: any) {
+  const { [keyExclude]: omitted, ...rest } = obj;
+  return rest;
 }
 
 function loginConfig(action: typesAction) {
