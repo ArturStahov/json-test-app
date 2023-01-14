@@ -17,13 +17,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
 import { useUserStore } from '../../stor/userStor';
 import AuthForm from '../../components/Auth/AuthForm.vue';
 import ToggleButton from '../../components/ToggleButton/ToggleButton.vue';
-import { authActions } from '../../constants/auth';
+import { authActions, authEmitEvents } from '../../constants/auth';
 import { getAuthConfig } from '../../services/auth.service';
-import { IAuthConfig, typesAction } from '@/interfaces/auth.interface';
+import { IAuthConfig, ILoginErrorEvent, typesAction } from '@/interfaces/auth.interface';
+import { emitter } from '../../services/emitter';
+import { redirectTo } from '../../services/redirect.service';
+import { Pages } from '@/constants/pages';
 
 export default defineComponent({
   name: 'AuthPage',
@@ -50,8 +53,30 @@ export default defineComponent({
     const authConfig = ref<IAuthConfig | null>(null);
     const refreshKey = ref<number>(0);
 
+    const handlerRegistrationSuccess = () => {
+      console.log('SUCCESS reg')
+    }
+
+    const handlerLoginSuccess = () => {
+      console.log('SUCCESS login')
+      redirectTo(Pages.BOARD)
+    }
+
+    function handlerError(event: ILoginErrorEvent | unknown) {
+      console.log('Error typeEvent', event)
+    }
+
     onMounted(() => {
       authConfig.value = getAuthConfig(startAuthAction);
+      emitter.on(authEmitEvents.LOGIN_SUCCESS, handlerLoginSuccess);
+      emitter.on(authEmitEvents.REGISTRATION_SUCCESS, handlerRegistrationSuccess);
+      emitter.on(authEmitEvents.LOGIN_ERROR, handlerError);
+    });
+
+    onUnmounted(() => {
+      emitter.off(authEmitEvents.LOGIN_SUCCESS, handlerLoginSuccess);
+      emitter.off(authEmitEvents.REGISTRATION_SUCCESS, handlerRegistrationSuccess);
+      emitter.off(authEmitEvents.LOGIN_ERROR, handlerError);
     });
 
     const handlerToggleForm = (authAction: typesAction) => {

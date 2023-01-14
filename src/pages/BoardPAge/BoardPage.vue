@@ -1,14 +1,18 @@
 <template lang="pug">
 .board-wrapper
+  JsonEditorWidget
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useUserStore } from '../../stor/userStor';
+import JsonEditorWidget from '../../components/JsonEditorWidget/JsonEditorWidget.vue';
 
 export default defineComponent({
   name: 'BoardPage',
-  components: {},
+  components: {
+    JsonEditorWidget,
+  },
 
   setup() {
     const userStor = useUserStore();

@@ -67,7 +67,6 @@ export default defineComponent({
         ...this.submitPayload,
         [`${payload.code}`]: payload.value,
       };
-      console.log(this.submitPayload, 'this.submitPayload');
     },
 
     reset() {

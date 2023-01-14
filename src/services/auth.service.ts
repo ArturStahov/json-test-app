@@ -1,9 +1,10 @@
-import { IAuthConfig, IField, IValueAuthPayload, typesAction, rulesType, typeValidationItem, IFormSubmitPayload } from '../interfaces/auth.interface';
+import { IAuthConfig, IField, IValueAuthPayload, typesAction, rulesType, typeValidationItem, IFormSubmitPayload, ILoginErrorEvent } from '../interfaces/auth.interface';
 import { IUser } from '../interfaces/user.interface';
 import axios from 'axios';
 import { useUserStore } from '../stor/userStor';
 import { codeFields } from '../constants/fields';
-import { authActions } from '../constants/auth';
+import { authActions, authEmitEvents } from '../constants/auth';
+import { emitter } from './emitter';
 
 const PASSWORD_RULES = [(v: string) => !!v, (v: string) => v && v.length > 8];
 const EMAIL_RULES = [(v: string) => !!v, (v: string) => /.+@.+\..+/.test(v)];
@@ -19,25 +20,33 @@ const unsetToken = () => {
 
 async function loginFlow(payload: IValueAuthPayload) {
   try {
-    console.log('>>>>payload LOGIN', payload);
     const userStor = useUserStore();
     const data = await userStor.login(payload);
     const token = (data as IUser).token;
     setToken(token);
-  } catch (error) {
-    console.log('>>>>ERRR', error);
+    emitter.emit(authEmitEvents.LOGIN_SUCCESS);
+  } catch (error: any) {
+    const errorEvent: ILoginErrorEvent = {
+      type: authActions.LOGIN,
+      message: error.message  // add functional get error message for code or in backend error add
+    }
+    emitter.emit(authEmitEvents.LOGIN_ERROR, errorEvent);
   }
 }
 
 async function registrationFlow(payload: IValueAuthPayload) {
   try {
     const submitPayload = excludeParam(codeFields.REPASSWORD, payload)
-    console.log('>>>>payload REG', submitPayload);
     const userStor = useUserStore();
     const data = await userStor.registration(submitPayload);
-    console.log('DATA', data)
-  } catch (error) {
-    console.log('>>>>ERRR', error);
+    console.log('registration DATA', data)
+    emitter.emit(authEmitEvents.REGISTRATION_SUCCESS);
+  } catch (error: any) {
+    const errorEvent: ILoginErrorEvent = { 
+       type: authActions.REGISTRATION ,
+       message: error.message 
+    }
+    emitter.emit(authEmitEvents.LOGIN_ERROR, errorEvent);
   }
 }
 

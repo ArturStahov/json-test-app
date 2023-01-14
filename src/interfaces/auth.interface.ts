@@ -40,6 +40,11 @@ export interface IField {
   validStatus?: boolean,
 }
 
+export interface ILoginErrorEvent {
+  type: typesAction,
+  message: string,
+}
+
 export interface IFormSubmitPayload { [key: string]: string }
 
 export type typesAction = authActions.LOGIN | authActions.REGISTRATION

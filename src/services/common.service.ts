@@ -1,5 +1,5 @@
 
-let vueInstance: Record<string, never> = {};
+let vueInstance: Record<string, any> = {};
 
 export function initAppInstance(vue: any): void {
   vueInstance = vue;
@@ -10,5 +10,5 @@ export function getStore() {
 }
 
 export function getAppInstance() {
-  return vueInstance;
+  return vueInstance._instance.ctx.$root;
 }
