@@ -1,8 +1,18 @@
 <template lang="pug">
 router-view
+NotificatorToast
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
+import NotificatorToast from './components/Notificator/NotificatorToast.vue';
+export default defineComponent({
+  name: 'App',
+  components: {
+    NotificatorToast,
+  },
+
+});
 </script>
 
 

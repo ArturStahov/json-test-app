@@ -5,6 +5,7 @@ v-btn-toggle(v-model='toggle', rounded='0', color='#ffef7c', group, mandatory)
 </template>
 
 <script lang="ts">
+import { toggleConfigAction } from '@/interfaces/toggle.interface';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -30,6 +31,9 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    toggleSetValue: {
+      type: String,
+    }
   },
   data: () => ({
     toggle: '',
@@ -44,10 +48,18 @@ export default defineComponent({
     },
   },
   watch: {
-    toggle: {
+    'toggle': {
       handler(value) {
         this.$emit('selected-value', value);
       },
+    },
+    'toggleSetValue': {
+      handler(value) {
+        if (value) {
+          this.toggle = value;
+        }
+      },
+      immediate: false
     },
   },
 });
