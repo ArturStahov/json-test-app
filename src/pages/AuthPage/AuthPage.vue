@@ -25,7 +25,7 @@ import ToggleButton from '../../components/ToggleButton/ToggleButton.vue';
 import { authActions } from '../../constants/auth';
 import { authEmitEvents } from '../../events/auth.events';
 import { getAuthConfig } from '../../services/auth.service';
-import { IAuthConfig, ILoginErrorEvent, typesAction } from '@/interfaces/auth.interface';
+import { IAuthConfig, typesAction } from '@/interfaces/auth.interface';
 import { emitter } from '../../services/emitter';
 import { redirectTo } from '../../services/redirect.service';
 import { Pages } from '@/constants/pages';
@@ -79,7 +79,6 @@ export default defineComponent({
     const handlerToggleForm = (authAction: typesAction) => {
       authConfig.value = getAuthConfig(authAction);
       refreshKey.value += 1;
-      console.log(authConfig.value);
     };
 
     return { userStor, handlerToggleForm, startAuthAction, authConfig, toggleConfig, refreshKey, toggleSetValue };

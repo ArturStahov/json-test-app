@@ -1,5 +1,5 @@
 <template lang="pug">
-v-snackbar(v-model="show") {{ message }}
+v-snackbar.Notificator(v-model="show" :timeout="7000" color="#3d7a29" multi-line class="ma-2") {{ message }}
 </template>
 
 <script lang="ts">
@@ -50,4 +50,12 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import '../../style/theme.scss';
+.Notificator {
+  :deep(.v-overlay__content) {
+    bottom: 2% !important;
+    .v-snackbar__content {
+      font-size: 1.4rem;
+    }
+  }
+}
 </style>

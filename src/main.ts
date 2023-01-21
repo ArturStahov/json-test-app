@@ -3,7 +3,8 @@ import { createApp } from 'vue';
 import 'vuetify/styles';
 import 'normalize.css';
 import './style/main.scss';
-import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/css/all.css';
+import 'vanilla-jsoneditor/themes/jse-theme-dark.css';
 
 import App from './App.vue';
 import { createPinia } from 'pinia';

@@ -1,14 +1,13 @@
-import { IAuthConfig, IField, IValueAuthPayload, typesAction, rulesType, typeValidationItem, IFormSubmitPayload, ILoginErrorEvent } from '../interfaces/auth.interface';
+import { IAuthConfig, IField, IValueAuthPayload, typesAction, rulesType, typeValidationItem, IFormSubmitPayload } from '../interfaces/auth.interface';
 import { IUser } from '../interfaces/user.interface';
 import axios from 'axios';
 import { useUserStore } from '../stor/userStor';
 import { codeFields } from '../constants/fields';
 import { authActions } from '../constants/auth';
 import { authEmitEvents } from '../events/auth.events';
-import { notificatorEmitEvents } from '../events/notificator.events';
 import { emitter } from './emitter';
 import { notificatorEnumTypes } from '@/constants/notificator';
-import { INotificatorEvent } from '@/interfaces/notificator.interface';
+import { showNotificatorToast } from './notificator.service';
 
 const PASSWORD_RULES = [(v: string) => !!v, (v: string) => v && v.length > 8];
 const EMAIL_RULES = [(v: string) => !!v, (v: string) => /.+@.+\..+/.test(v)];
@@ -30,12 +29,7 @@ async function loginFlow(payload: IValueAuthPayload) {
     setToken(token);
     emitter.emit(authEmitEvents.LOGIN_SUCCESS);
   } catch (error: any) {
-    const errorEvent: INotificatorEvent = {
-      type: notificatorEnumTypes.ERROR,
-      msg: error.message  // add functional get error message for code or in backend error add
-    }
-
-    emitter.emit(notificatorEmitEvents.SHOW_TOAST, errorEvent);
+    showNotificatorToast(notificatorEnumTypes.ERROR, error.message);
   }
 }
 
@@ -46,18 +40,9 @@ async function registrationFlow(payload: IValueAuthPayload) {
     const data = await userStor.registration(submitPayload);
     console.log('registration DATA', data)
     emitter.emit(authEmitEvents.REGISTRATION_SUCCESS);
-    const successToastEvent: INotificatorEvent = {
-      type: notificatorEnumTypes.SUCCESS,
-      msg: 'Success Registration !'
-    }
-    emitter.emit(notificatorEmitEvents.SHOW_TOAST, successToastEvent);
+    showNotificatorToast(notificatorEnumTypes.SUCCESS, 'Success Registration! Please login use you email and password.');
   } catch (error: any) {
-    const errorEvent: INotificatorEvent = {
-      type: notificatorEnumTypes.ERROR,
-      msg: error.message  // add functional get error message for code or in backend error add
-    }
-
-    emitter.emit(notificatorEmitEvents.SHOW_TOAST, errorEvent);
+    showNotificatorToast(notificatorEnumTypes.ERROR, error.message);
   }
 }
 
@@ -67,8 +52,8 @@ export async function logoutAction() {
     const data = await userStor.logout();
     console.log('DATA', data);
     unsetToken();
-  } catch (error) {
-    console.log('>>>>ERRR', error);
+  } catch (error: any) {
+    showNotificatorToast(notificatorEnumTypes.ERROR, error.message);// add functional get error message for code or in backend error add
   }
 }
 
