@@ -8,7 +8,9 @@ const routes = [
   {
     path: '/',
     name: Pages.Auth,
-    component: AuthPage
+    component: AuthPage,
+   // redirect: { name: Pages.BOARD }
+    
   },
   {
     path: `/${Pages.BOARD}`,

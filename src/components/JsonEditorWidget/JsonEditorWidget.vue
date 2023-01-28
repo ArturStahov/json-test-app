@@ -99,8 +99,96 @@ export default defineComponent({
 });
 </script>
 
+<style lang="scss">
+@import '../../style/theme.scss';
+.jse-modal-window {
+  border-radius: 9px !important;
+  box-shadow: $box-shadow;
+   .jse-modal-content {
+    border-radius: 8px !important;
+    .jse-header-outer .jse-header {
+        background: $color-light-yellow !important;
+      }
+   }
+
+   .jse-header {
+    background: $dark-green !important;
+   }
+   .jse-actions button {
+    border-radius: 20px !important;
+    background: $color-red !important;
+    transition: background 0.4s ease-in ;
+    &:hover {
+      background: $color-red-dark !important;
+    }
+   }
+}
+.jse-contextmenu {
+  background: $grey !important;
+  border-radius: 4px;
+}
+</style>
+
 <style scoped lang="scss">
+@import '../../style/theme.scss';
 .json-widget-wrapper {
-  width: 600px;
+  max-width: 600px;
+  min-width: 450px;
+
+  :deep(.jse-button.jse-contextmenu) {
+    background: transparent !important;
+  }
+
+  :deep(.jse-main) {
+    height: 475px !important;
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+    
+      ::-webkit-scrollbar-track {
+         background-color: transparent;
+      }
+    
+      ::-webkit-scrollbar-thumb {
+        background-color: $grey-light;
+        cursor: pointer;
+      }
+
+    .jse-table-mode button.jse-nested-array-action {
+      background: $dark-green !important;
+      transition: background 0.4s ease-in;
+      &:hover {
+        background: $color-green !important;
+      }
+    }
+    .jse-contents {
+        padding: 15px 10px !important;
+        .jse-json-node  {
+           .jse-contents-outer .jse-contents {
+             padding: 5px 10px !important;
+           }
+           .jse-header-outer {
+             margin-bottom: 5px !important;
+           }
+        }
+      }
+    .jse-status-bar {
+      background: $dark-green !important;
+    }
+  }
+
+  :deep(.jse-menu) {
+    background: $color-green !important;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    .jse-button {
+      &:hover {
+          background: $dark-green !important;
+        }
+      &:focus {
+        background: $dark-green !important;
+      }
+    }
+  }
 }
 </style>

@@ -36,6 +36,7 @@ export default defineComponent({
         label: 'text',
         errorMessage: 'text',
         required: true,
+        validStatus: true,
         value: '',
       }),
     },
