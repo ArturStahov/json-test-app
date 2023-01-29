@@ -189,6 +189,10 @@ export default defineComponent({
         background: $dark-green !important;
       }
     }
+        .jse-button.jse-group-button.jse-selected {
+          color: $color-black-1b !important;
+          font-weight: 600;
+        }
   }
 }
 </style>

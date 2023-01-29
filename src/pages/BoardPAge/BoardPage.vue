@@ -1,6 +1,25 @@
 <template lang="pug">
 .board-wrapper
-  JsonEditorWidget
+  v-card.page-header-wrapper.mx-auto( 
+    flat
+    rounded="0"
+  )
+    v-toolbar.page-header(density="compact")
+      v-app-bar-nav-icon(
+        color='#ffef7c'
+      )
+      v-spacer
+      v-list-item(
+        prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
+        title="John Leider"
+      )
+ 
+        
+       
+
+  v-card.page-content.mx-auto
+    JsonEditorWidget
+
 </template>
 
 <script lang="ts">
@@ -12,6 +31,15 @@ export default defineComponent({
   name: 'BoardPage',
   components: {
     JsonEditorWidget,
+  },
+  data() {
+    return {
+     
+    }
+  },
+
+  methods: {
+   
   },
 
   setup() {
@@ -28,12 +56,23 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import '../../style/theme.scss';
 .board-wrapper {
-  background-color: rgb(212, 233, 117);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
   width: 100%;
   height: 100%;
+  .page-header-wrapper {
+    height: 150px;
+    background-color: $color-light2-green !important;
+    .page-header {
+      padding: 5px;
+      box-shadow: $box-shadow;
+      background: $dark-green;
+    }
+  }
+  .page-content {
+    background-color: $color-light-yellow-transparent;
+    height: calc(100% - 150px);
+    padding:10px;
+  }
 }
 </style>
