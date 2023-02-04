@@ -1,24 +1,16 @@
 <template lang="pug">
-.board-wrapper
-  v-card.page-header-wrapper.mx-auto( 
-    flat
-    rounded="0"
+.board-page
+  v-card.header-wrapper.mx-auto( 
+     flat
+     rounded="0"
   )
-    v-toolbar.page-header(density="compact")
-      v-app-bar-nav-icon(
-        color='#ffef7c'
-      )
-      v-spacer
-      v-list-item(
-        prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-        title="John Leider"
-      )
- 
-        
-       
-
-  v-card.page-content.mx-auto
-    JsonEditorWidget
+    HeaderToolbar(@action-menu-toggle='openSidebar=!openSidebar')
+   
+  v-card.content-wrapper.mx-auto
+    v-layout
+      LeftSidebar(:openSidebar='openSidebar')
+      v-main()
+        JsonEditorWidget
 
 </template>
 
@@ -26,25 +18,27 @@
 import { defineComponent } from 'vue';
 import { useUserStore } from '../../stor/userStor';
 import JsonEditorWidget from '../../components/JsonEditorWidget/JsonEditorWidget.vue';
+import LeftSidebar from './childrens/LeftSidebar.vue';
+import HeaderToolbar from './childrens/HeaderToolbar.vue';
 
 export default defineComponent({
   name: 'BoardPage',
   components: {
     JsonEditorWidget,
+    LeftSidebar,
+    HeaderToolbar,
   },
   data() {
     return {
-     
+      openSidebar: true,
     }
   },
 
   methods: {
-   
   },
 
   setup() {
     const userStor = useUserStore();
-
     return { userStor };
   },
   computed: {
@@ -57,19 +51,14 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import '../../style/theme.scss';
-.board-wrapper {
+.board-page {
   width: 100%;
   height: 100%;
-  .page-header-wrapper {
+  .header-wrapper {
     height: 150px;
     background-color: $color-light2-green !important;
-    .page-header {
-      padding: 5px;
-      box-shadow: $box-shadow;
-      background: $dark-green;
-    }
   }
-  .page-content {
+  .content-wrapper {
     background-color: $color-light-yellow-transparent;
     height: calc(100% - 150px);
     padding:10px;
