@@ -6,8 +6,7 @@ v-toolbar.page-header(density="compact")
   )
   v-spacer
   v-list-item(
-    prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-    title="John Leider"
+    :prepend-avatar="avatar"
   )
 
 </template>
@@ -17,6 +16,11 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'HeaderToolbar',
+  props: {
+   user: {
+    type: Object,
+   }
+  },
   components: {
   },
   data() {
@@ -27,6 +31,11 @@ export default defineComponent({
   methods: {
     actionMenuToggle() {
       this.$emit('action-menu-toggle')
+    }
+  },
+  computed: {
+    avatar() {
+      return this.user?.avatar || './images/default.png';
     }
   },
 });

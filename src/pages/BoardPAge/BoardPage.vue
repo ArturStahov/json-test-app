@@ -4,7 +4,7 @@
      flat
      rounded="0"
   )
-    HeaderToolbar(@action-menu-toggle='openSidebar=!openSidebar')
+    HeaderToolbar(@action-menu-toggle='openSidebar=!openSidebar' :user='user')
    
   v-card.content-wrapper.mx-auto
     v-layout
