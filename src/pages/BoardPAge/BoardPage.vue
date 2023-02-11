@@ -5,7 +5,7 @@
      rounded="0"
   )
     HeaderToolbar(@action-menu-toggle='openSidebar=!openSidebar' :user='user')
-   
+    UrlInputControl
   v-card.content-wrapper.mx-auto
     v-layout
       LeftSidebar(:openSidebar='openSidebar')
@@ -20,6 +20,7 @@ import { useUserStore } from '../../stor/userStor';
 import JsonEditorWidget from '../../components/JsonEditorWidget/JsonEditorWidget.vue';
 import LeftSidebar from './childrens/LeftSidebar.vue';
 import HeaderToolbar from './childrens/HeaderToolbar.vue';
+import UrlInputControl from '@/components/UrlInputControl/UrlInputControl.vue';
 
 export default defineComponent({
   name: 'BoardPage',
@@ -27,6 +28,7 @@ export default defineComponent({
     JsonEditorWidget,
     LeftSidebar,
     HeaderToolbar,
+    UrlInputControl,
   },
   data() {
     return {
@@ -57,6 +59,9 @@ export default defineComponent({
   .header-wrapper {
     height: 150px;
     background-color: $color-light2-green !important;
+    :deep(.UrlInputControl) {
+      margin: 20px auto;
+    }
   }
   .content-wrapper {
     background-color: $color-light-yellow-transparent;
