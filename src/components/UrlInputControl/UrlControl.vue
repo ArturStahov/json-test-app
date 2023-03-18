@@ -1,5 +1,5 @@
 <template lang="pug">
-.UrlInputControl
+.UrlControl
    v-text-field.url-input(
      single-line,
      hide-details,
@@ -10,6 +10,7 @@
      :label='"input api url"',
      :placeholder="'https://example.com'"
      v-model='inputValue'
+     @input.stop='change'
    )
 </template>
 
@@ -17,7 +18,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'UrlInputControl',
+  name: 'UrlControl',
   props: {
   },
   data: () => ({
@@ -27,18 +28,17 @@ export default defineComponent({
   created() {
    
   },
-  computed: {
-   
-  },
-  watch: {
-   
-  },
+  methods: {
+    change() {
+      this.$emit('inputUrl', this.inputValue)
+    }
+  }
 });
 </script>
 
 <style scoped lang="scss">
 @import '../../style/theme.scss';
-.UrlInputControl {
+.UrlControl {
   width: 600px;
   .url-input {
     width: 100%;

@@ -5,7 +5,20 @@
      rounded="0"
   )
     HeaderToolbar(@action-menu-toggle='openSidebar=!openSidebar' :user='user')
-    UrlInputControl
+    .header-controls 
+      SingleSelect(
+        :list='listRequestMethods'
+        @change-value='handlerRequestMethods'
+      )
+      UrlControl(
+        @inputUrl='handlerInputUrl'
+      )
+      v-btn.button-send-request(
+       @click="handlerSendRequest" 
+       color='#33a50e'
+      )
+        v-icon(:icon='"fas fa-paper-plane"')
+    
   v-card.content-wrapper.mx-auto
     v-layout
       LeftSidebar(:openSidebar='openSidebar')
@@ -20,7 +33,8 @@ import { useUserStore } from '../../stor/userStor';
 import JsonEditorWidget from '../../components/JsonEditorWidget/JsonEditorWidget.vue';
 import LeftSidebar from './childrens/LeftSidebar.vue';
 import HeaderToolbar from './childrens/HeaderToolbar.vue';
-import UrlInputControl from '@/components/UrlInputControl/UrlInputControl.vue';
+import UrlControl from '@/components/UrlInputControl/UrlControl.vue';
+import SingleSelect from '@/components/Fields/SingleSelect.vue';
 
 export default defineComponent({
   name: 'BoardPage',
@@ -28,15 +42,34 @@ export default defineComponent({
     JsonEditorWidget,
     LeftSidebar,
     HeaderToolbar,
-    UrlInputControl,
+    UrlControl,
+    SingleSelect,
   },
   data() {
     return {
       openSidebar: true,
+      urlValue: '',
+      listRequestMethods: [
+        { label: 'Post', code: 'post' },
+        { label: 'Get', code: 'get' },
+        { label: 'Put', code: 'put' },
+        { label: 'Path', code: 'path' },
+        { label: 'Delete', code: 'delete' },
+      ],
+      selectedRequestMethods: { label: 'Post', code: 'post' },
     }
   },
 
   methods: {
+    handlerInputUrl(value: string) {
+      this.urlValue = value
+    },
+    handlerSendRequest() {
+      console.log('Request submit')
+    },
+    handlerRequestMethods(select: any) {
+       this.selectedRequestMethods = select;
+    }
   },
 
   setup() {
@@ -62,6 +95,17 @@ export default defineComponent({
     :deep(.UrlInputControl) {
       margin: 20px auto;
     }
+  }
+
+  .header-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .button-send-request {
+    height: 40px;
+    margin-left: 5px;
   }
   .content-wrapper {
     background-color: $color-light-yellow-transparent;

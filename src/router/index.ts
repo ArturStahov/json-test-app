@@ -9,7 +9,7 @@ const routes = [
     path: '/',
     name: Pages.Auth,
     component: AuthPage,
-  //  redirect: { name: Pages.BOARD }
+   redirect: { name: Pages.BOARD }
     
   },
   {
